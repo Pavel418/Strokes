@@ -30,15 +30,13 @@ public class Draw {
 	JButton clearButton, blackButton, blueButton, greenButton, redButton,
 			colorPicker, magentaButton, grayButton, orangeButton, yellowButton,
 			pinkButton, cyanButton, lightGrayButton, saveButton, loadButton,
-			saveAsButton, rectangle, pencil, undoButton, redoButton;
-	private JFileChooser fileChooser;
-	private File file;
-	private Icon save = new ImageIcon(getClass().getResource("save.png"));
-	private Icon undo = new ImageIcon(getClass().getResource("undo.png"));
-	private Icon redo = new ImageIcon(getClass().getResource("redo.png"));
-	private Icon pencilIcon = new ImageIcon(getClass()
-			.getResource("pencil.png"));
-	private Icon rect = new ImageIcon(getClass().getResource("rect.png"));
+			saveAsButton, rectangle, pencil, undoButton, redoButton, circle;
+    private File file;
+	private final Icon save = new ImageIcon(getClass().getResource("save.png"));
+	private final Icon undo = new ImageIcon(getClass().getResource("undo.png"));
+	private final Icon redo = new ImageIcon(getClass().getResource("redo.png"));
+	private final Icon pencilIcon = new ImageIcon(getClass().getResource("pencil.png"));
+	private final Icon rect = new ImageIcon(getClass().getResource("rect.png"));
 	private int saveCounter = 0;
 	private JLabel filenameBar, thicknessStat;
 	private JSlider thicknessSlider;
@@ -53,7 +51,8 @@ public class Draw {
 	ActionListener listener = new ActionListener() {
 
 		public void actionPerformed(ActionEvent event) {
-			if (event.getSource() == clearButton) {
+            JFileChooser fileChooser;
+            if (event.getSource() == clearButton) {
 				canvas.clear();
 			} else if (event.getSource() == blackButton) {
 				canvas.black();
@@ -83,6 +82,8 @@ public class Draw {
 				canvas.redo();
 			} else if (event.getSource() == rectangle) {
 				canvas.rect();
+			} else if (event.getSource() == circle) {
+				canvas.circle();
 			} else if (event.getSource() == pencil) {
 				canvas.pencil();
 			} else if (event.getSource() == saveButton) {
@@ -122,24 +123,14 @@ public class Draw {
 			}
 		}
 	};
+
 	public void setWH(int width,int height){
 		this.width = width;
 		this.height = height;
 	}
+
 	public void openPaint() {
-		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-	        if ("Nimbus".equals(info.getName())) {
-	            try {
-					UIManager.setLookAndFeel(info.getClassName());
-				} catch (ClassNotFoundException | InstantiationException
-						| IllegalAccessException
-						| UnsupportedLookAndFeelException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	            break;
-	        }
-	    }
+		InputWH.setNimbusFeel();
 		JFrame frame = new JFrame("Paint ("+ width +"X" + height +")");
 		Container container = frame.getContentPane();
 		container.setLayout(new BorderLayout());
@@ -160,6 +151,9 @@ public class Draw {
 		rectangle = new JButton(rect);
 		rectangle.setPreferredSize(new Dimension(40, 40));
 		rectangle.addActionListener(listener);
+		circle = new JButton(rect);
+		circle.setPreferredSize(new Dimension(40, 40));
+		circle.addActionListener(listener);
 		thicknessSlider = new JSlider(JSlider.HORIZONTAL, 0, 50, 1);
 		thicknessSlider.setMajorTickSpacing(25);
 		thicknessSlider.setPaintTicks(true);
@@ -238,10 +232,12 @@ public class Draw {
 		box.add(undoButton, BorderLayout.NORTH);
 		box.add(Box.createVerticalStrut(5));
 		box.add(redoButton, BorderLayout.NORTH);
-		/*box.add(Box.createVerticalStrut(5));
+		box.add(Box.createVerticalStrut(5));
 		box.add(pencil, BorderLayout.NORTH);
 		box.add(Box.createVerticalStrut(5));
-		box.add(rectangle, BorderLayout.NORTH);*/
+		box.add(rectangle, BorderLayout.NORTH);
+		box.add(Box.createVerticalStrut(5));
+		box.add(circle, BorderLayout.NORTH);
 
 		panel.add(greenButton);
 		panel.add(blueButton);

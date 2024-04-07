@@ -25,19 +25,7 @@ public class InputWH {
 	}
 
 	private void showInput() {
-		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-	        if ("Nimbus".equals(info.getName())) {
-	            try {
-					UIManager.setLookAndFeel(info.getClassName());
-				} catch (ClassNotFoundException | InstantiationException
-						| IllegalAccessException
-						| UnsupportedLookAndFeelException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	            break;
-	        }
-	    }
+		setNimbusFeel();
 		JPanel p = new JPanel(new BorderLayout(5, 5));
 		JPanel labels = new JPanel(new GridLayout(0,1,2,2));
 		JPanel labels1 = new JPanel(new FlowLayout());
@@ -66,9 +54,27 @@ public class InputWH {
 			draw.setWH(width, height);
 			draw.openPaint();
 		} catch (IllegalArgumentException e) {
-			JOptionPane.showMessageDialog(null, p,
-					"Please enter valid number!", JOptionPane.ERROR_MESSAGE);
+//			JOptionPane.showMessageDialog(null, p,
+//					"Please enter valid number!", JOptionPane.ERROR_MESSAGE);
+			draw.setWH(1000, 1000);
+			draw.openPaint();
 		}
+	}
+
+	static void setNimbusFeel() {
+		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+	        if ("Nimbus".equals(info.getName())) {
+	            try {
+					UIManager.setLookAndFeel(info.getClassName());
+				} catch (ClassNotFoundException | InstantiationException
+						| IllegalAccessException
+						| UnsupportedLookAndFeelException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	            break;
+	        }
+	    }
 	}
 
 	/**
