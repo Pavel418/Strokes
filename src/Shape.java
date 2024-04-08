@@ -3,7 +3,8 @@ import java.awt.*;
 abstract class Shape implements Cloneable {
     protected Point start, end;
 
-    public Shape() {}
+    public Shape() {
+    }
 
     public void setPosition(Point start) {
         this.start = start;
@@ -39,7 +40,7 @@ abstract class Shape implements Cloneable {
             y = end.y - start.y;
         }
 
-        return new int[] {zeroX, x, zeroY, y};
+        return new int[] { zeroX, x, zeroY, y };
     }
 }
 
@@ -55,7 +56,8 @@ class Rectangle extends Shape {
 }
 
 class Oval extends Shape {
-    public Oval() {}
+    public Oval() {
+    }
 
     @Override
     public void draw(Graphics g) {
@@ -66,29 +68,32 @@ class Oval extends Shape {
 }
 
 class RightTriangle extends Shape {
-    public RightTriangle() {}
+    public RightTriangle() {
+    }
 
     @Override
     public void draw(Graphics g) {
-        int[] xPoints = {start.x, start.x, end.x};
-        int[] yPoints = {start.y, end.y, end.y};
+        int[] xPoints = { start.x, start.x, end.x };
+        int[] yPoints = { start.y, end.y, end.y };
         g.drawPolygon(xPoints, yPoints, 3);
     }
 }
 
 class Triangle extends Shape {
-    public Triangle() {}
+    public Triangle() {
+    }
 
     @Override
     public void draw(Graphics g) {
-        int[] xPoints = {start.x, end.x, start.x + (end.x - start.x) / 2};
-        int[] yPoints = {start.y, end.y, start.y};
+        int[] xPoints = { start.x, end.x, start.x + (end.x - start.x) / 2 };
+        int[] yPoints = { start.y, end.y, start.y };
         g.drawPolygon(xPoints, yPoints, 3);
     }
 }
 
 class Line extends Shape {
-    public Line() {}
+    public Line() {
+    }
 
     @Override
     public void draw(Graphics g) {
@@ -97,18 +102,20 @@ class Line extends Shape {
 }
 
 class Diamond extends Shape {
-    public Diamond() {}
+    public Diamond() {
+    }
 
     @Override
     public void draw(Graphics g) {
-        int[] xPoints = {start.x, start.x + (end.x - start.x) / 2, end.x, start.x + (end.x - start.x) / 2};
-        int[] yPoints = {start.y + (end.y - start.y) / 2, end.y, start.y + (end.y - start.y) / 2, start.y};
+        int[] xPoints = { start.x, start.x + (end.x - start.x) / 2, end.x, start.x + (end.x - start.x) / 2 };
+        int[] yPoints = { start.y + (end.y - start.y) / 2, end.y, start.y + (end.y - start.y) / 2, start.y };
         g.drawPolygon(xPoints, yPoints, 4);
     }
 }
 
 class Pentagon extends Shape {
-    public Pentagon() {}
+    public Pentagon() {
+    }
 
     @Override
     public void draw(Graphics g) {
@@ -119,14 +126,15 @@ class Pentagon extends Shape {
         zeroY = values[2];
         y = values[3];
 
-        int[] xPoints = {zeroX + x/6, zeroX + x*5/6, zeroX + x, zeroX + x/2, zeroX};
-        int[] yPoints = {zeroY, zeroY, zeroY + y*13/22, zeroY + y, zeroY + y*13/22};
+        int[] xPoints = { zeroX + x / 6, zeroX + x * 5 / 6, zeroX + x, zeroX + x / 2, zeroX };
+        int[] yPoints = { zeroY, zeroY, zeroY + y * 13 / 22, zeroY + y, zeroY + y * 13 / 22 };
         g.drawPolygon(xPoints, yPoints, 5);
     }
 }
 
 class Arrow extends Shape {
-    public Arrow() {}
+    public Arrow() {
+    }
 
     @Override
     public void draw(Graphics g) {
@@ -137,8 +145,9 @@ class Arrow extends Shape {
         zeroY = values[2];
         y = values[3];
 
-        int[] xPoints = {zeroX, zeroX, zeroX + x/2, zeroX + x/2, zeroX + x, zeroX + x/2, zeroX + x/2};
-        int[] yPoints = {zeroY + y/4, zeroY + y*3/4, zeroY + y*3/4, zeroY + y, zeroY + y/2, zeroY, zeroY + y/4};
+        int[] xPoints = { zeroX, zeroX, zeroX + x / 2, zeroX + x / 2, zeroX + x, zeroX + x / 2, zeroX + x / 2 };
+        int[] yPoints = { zeroY + y / 4, zeroY + y * 3 / 4, zeroY + y * 3 / 4, zeroY + y, zeroY + y / 2, zeroY,
+                zeroY + y / 4 };
         g.drawPolygon(xPoints, yPoints, 7);
     }
 }

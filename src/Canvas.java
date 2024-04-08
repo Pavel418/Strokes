@@ -21,12 +21,11 @@ import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.event.MouseInputAdapter;
 
-
 public class Canvas extends JComponent {
 	private int X1, Y1, X2, Y2;
 	private Graphics2D g;
 	private Image img;
-    ArrayList<Shape> shapes = new ArrayList<>();
+	ArrayList<Shape> shapes = new ArrayList<>();
 	private final Stack<Image> undoStack = new Stack<>();
 	private final Stack<Image> redoStack = new Stack<>();
 	private Shape shape;
@@ -94,7 +93,7 @@ public class Canvas extends JComponent {
 
 	public void undo() {
 		if (!undoStack.isEmpty()) {
-            Image undoTemp = undoStack.pop();
+			Image undoTemp = undoStack.pop();
 			redoStack.push(img);
 			setImage(undoTemp);
 		}
@@ -102,7 +101,7 @@ public class Canvas extends JComponent {
 
 	public void redo() {
 		if (!redoStack.isEmpty()) {
-            Image redoTemp = redoStack.pop();
+			Image redoTemp = redoStack.pop();
 			undoStack.push(img);
 			setImage(redoTemp);
 		}
@@ -200,8 +199,7 @@ public class Canvas extends JComponent {
 		try {
 			img = ImageIO.read(file);
 			g = (Graphics2D) img.getGraphics();
-		}
-		catch (IOException ignored) {
+		} catch (IOException ignored) {
 		}
 	}
 
@@ -253,26 +251,22 @@ public class Canvas extends JComponent {
 		g.setPaint(color);
 	}
 
-	class MyMouseListener extends MouseInputAdapter
-	{
+	class MyMouseListener extends MouseInputAdapter {
 		private Point startPoint;
 
-		public void mousePressed(MouseEvent e)
-		{
+		public void mousePressed(MouseEvent e) {
 			System.out.println("mousePressed");
 			startPoint = e.getPoint();
 			shape.setPosition(startPoint);
 			shape.resize(startPoint);
 		}
 
-		public void mouseDragged(MouseEvent e)
-		{
+		public void mouseDragged(MouseEvent e) {
 			shape.resize(e.getPoint());
 			repaint();
 		}
 
-		public void mouseReleased(MouseEvent e)
-		{
+		public void mouseReleased(MouseEvent e) {
 			try {
 				shapes.add((Shape) shape.clone());
 				repaint();
@@ -282,5 +276,3 @@ public class Canvas extends JComponent {
 		}
 	}
 }
-
-	

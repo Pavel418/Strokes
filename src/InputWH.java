@@ -27,7 +27,7 @@ public class InputWH {
 	private void showInput() {
 		setNimbusFeel();
 		JPanel p = new JPanel(new BorderLayout(5, 5));
-		JPanel labels = new JPanel(new GridLayout(0,1,2,2));
+		JPanel labels = new JPanel(new GridLayout(0, 1, 2, 2));
 		JPanel labels1 = new JPanel(new FlowLayout());
 		labels.add(new JLabel("Width", SwingConstants.RIGHT));
 		labels.add(new JLabel("Height", SwingConstants.RIGHT));
@@ -47,15 +47,15 @@ public class InputWH {
 		try {
 			width = Integer.parseInt(widthField.getText());
 			height = Integer.parseInt(heightField.getText());
-			if(width<900 || height <800){
+			if (width < 900 || height < 800) {
 				JOptionPane.showMessageDialog(null, p,
 						"W:900,H:800 Minimum required", JOptionPane.ERROR_MESSAGE);
 			}
 			draw.setWH(width, height);
 			draw.openPaint();
 		} catch (IllegalArgumentException e) {
-//			JOptionPane.showMessageDialog(null, p,
-//					"Please enter valid number!", JOptionPane.ERROR_MESSAGE);
+			// JOptionPane.showMessageDialog(null, p,
+			// "Please enter valid number!", JOptionPane.ERROR_MESSAGE);
 			draw.setWH(1000, 1000);
 			draw.openPaint();
 		}
@@ -63,8 +63,8 @@ public class InputWH {
 
 	static void setNimbusFeel() {
 		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-	        if ("Nimbus".equals(info.getName())) {
-	            try {
+			if ("Nimbus".equals(info.getName())) {
+				try {
 					UIManager.setLookAndFeel(info.getClassName());
 				} catch (ClassNotFoundException | InstantiationException
 						| IllegalAccessException
@@ -72,14 +72,14 @@ public class InputWH {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-	            break;
-	        }
-	    }
+				break;
+			}
+		}
 	}
 
 	/**
 	 * @param args
-	 *            none
+	 *             none
 	 */
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {

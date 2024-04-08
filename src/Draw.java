@@ -32,12 +32,21 @@ public class Draw {
 			pinkButton, cyanButton, lightGrayButton, saveButton, loadButton,
 			saveAsButton, rectangle, pencil, undoButton, redoButton, circle,
 			rightTriangle, triangle, line, diamond, arrow, pentagon;
-    private File file;
-	private final Icon save = new ImageIcon(getClass().getResource("save.png"));
-	private final Icon undo = new ImageIcon(getClass().getResource("undo.png"));
-	private final Icon redo = new ImageIcon(getClass().getResource("redo.png"));
-	private final Icon pencilIcon = new ImageIcon(getClass().getResource("pencil.png"));
-	private final Icon rect = new ImageIcon(getClass().getResource("rect.png"));
+	private File file;
+
+	private final Icon save = new ImageIcon(getClass().getResource("/assets/save.png"));
+	private final Icon undoIcon = new ImageIcon(getClass().getResource("/assets/undo.png"));
+	private final Icon redoIcon = new ImageIcon(getClass().getResource("/assets/redo.png"));
+	private final Icon pencilIcon = new ImageIcon(getClass().getResource("/assets/pencil.png"));
+	private final Icon rect = new ImageIcon(getClass().getResource("/assets/rect.png"));
+	private final Icon circleIcon = new ImageIcon(getClass().getResource("/assets/circle.png"));
+	private final Icon rightTriangleIcon = new ImageIcon(getClass().getResource("/assets/right_triangle.png"));
+	private final Icon lineIcon = new ImageIcon(getClass().getResource("/assets/line.png"));
+	private final Icon triangleIcon = new ImageIcon(getClass().getResource("/assets/triangle.png"));
+	private final Icon diamondIcon = new ImageIcon(getClass().getResource("/assets/diamond.png"));
+	private final Icon arrowIcon = new ImageIcon(getClass().getResource("/assets/arrow.png"));
+	private final Icon pentagonIcon = new ImageIcon(getClass().getResource("/assets/pentagon.png"));
+
 	private int saveCounter = 0;
 	private JLabel filenameBar, thicknessStat;
 	private JSlider thicknessSlider;
@@ -52,8 +61,8 @@ public class Draw {
 	ActionListener listener = new ActionListener() {
 
 		public void actionPerformed(ActionEvent event) {
-            JFileChooser fileChooser;
-            if (event.getSource() == clearButton) {
+			JFileChooser fileChooser;
+			if (event.getSource() == clearButton) {
 				canvas.clear();
 			} else if (event.getSource() == blackButton) {
 				canvas.black();
@@ -137,14 +146,14 @@ public class Draw {
 		}
 	};
 
-	public void setWH(int width,int height){
+	public void setWH(int width, int height) {
 		this.width = width;
 		this.height = height;
 	}
 
 	public void openPaint() {
 		InputWH.setNimbusFeel();
-		JFrame frame = new JFrame("Paint ("+ width +"X" + height +")");
+		JFrame frame = new JFrame("Paint (" + width + "X" + height + ")");
 		Container container = frame.getContentPane();
 		container.setLayout(new BorderLayout());
 		canvas = new Canvas();
@@ -161,45 +170,58 @@ public class Draw {
 		pencil = new JButton(pencilIcon);
 		pencil.setPreferredSize(new Dimension(40, 40));
 		pencil.addActionListener(listener);
+
 		rectangle = new JButton(rect);
 		rectangle.setPreferredSize(new Dimension(40, 40));
 		rectangle.addActionListener(listener);
-		circle = new JButton(rect);
+
+		circle = new JButton(circleIcon);
 		circle.setPreferredSize(new Dimension(40, 40));
 		circle.addActionListener(listener);
-		rightTriangle = new JButton(rect);
+
+		rightTriangle = new JButton(rightTriangleIcon);
 		rightTriangle.setPreferredSize(new Dimension(40, 40));
 		rightTriangle.addActionListener(listener);
-		line = new JButton(rect);
+
+		line = new JButton(lineIcon);
 		line.setPreferredSize(new Dimension(40, 40));
 		line.addActionListener(listener);
-		triangle = new JButton(rect);
+
+		triangle = new JButton(triangleIcon);
 		triangle.setPreferredSize(new Dimension(40, 40));
 		triangle.addActionListener(listener);
-		diamond = new JButton(rect);
+
+		diamond = new JButton(diamondIcon);
 		diamond.setPreferredSize(new Dimension(40, 40));
 		diamond.addActionListener(listener);
-		arrow = new JButton(rect);
+
+		arrow = new JButton(arrowIcon);
 		arrow.setPreferredSize(new Dimension(40, 40));
 		arrow.addActionListener(listener);
-		pentagon = new JButton(rect);
+
+		pentagon = new JButton(pentagonIcon);
 		pentagon.setPreferredSize(new Dimension(40, 40));
 		pentagon.addActionListener(listener);
+
 		thicknessSlider = new JSlider(JSlider.HORIZONTAL, 0, 50, 1);
 		thicknessSlider.setMajorTickSpacing(25);
 		thicknessSlider.setPaintTicks(true);
 		thicknessSlider.setPreferredSize(new Dimension(40, 40));
 		thicknessSlider.addChangeListener(thick);
-		undoButton = new JButton(undo);
-		undoButton.setPreferredSize(new Dimension(20, 20));
+
+		undoButton = new JButton(undoIcon);
+		undoButton.setPreferredSize(new Dimension(40, 40));
 		undoButton.addActionListener(listener);
-		redoButton = new JButton(redo);
-		redoButton.setPreferredSize(new Dimension(20, 20));
+
+		redoButton = new JButton(redoIcon);
+		redoButton.setPreferredSize(new Dimension(40, 40));
 		redoButton.addActionListener(listener);
+
 		blackButton = new JButton();
 		blackButton.setBackground(Color.BLACK);
 		blackButton.setPreferredSize(new Dimension(40, 40));
 		blackButton.addActionListener(listener);
+
 		blueButton = new JButton();
 		blueButton.setBackground(Color.BLUE);
 		blueButton.setPreferredSize(new Dimension(40, 40));
@@ -305,7 +327,7 @@ public class Draw {
 
 		frame.setVisible(true);
 
-		frame.setSize(width+79,height+11);
+		frame.setSize(width + 79, height + 11);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
