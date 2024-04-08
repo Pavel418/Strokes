@@ -124,6 +124,36 @@ public class Canvas extends JComponent {
 		shape = new Oval();
 	}
 
+	public void rightTriangle() {
+		setShapeListener();
+		shape = new RightTriangle();
+	}
+
+	public void triangle() {
+		setShapeListener();
+		shape = new Triangle();
+	}
+
+	public void line() {
+		setShapeListener();
+		shape = new Line();
+	}
+
+	public void diamond() {
+		setShapeListener();
+		shape = new Diamond();
+	}
+
+	public void pentagon() {
+		setShapeListener();
+		shape = new Pentagon();
+	}
+
+	public void arrow() {
+		setShapeListener();
+		shape = new Arrow();
+	}
+
 	private void setShapeListener() {
 		removeMouseListener(listener);
 		removeMouseMotionListener(motion);
@@ -232,6 +262,7 @@ public class Canvas extends JComponent {
 			System.out.println("mousePressed");
 			startPoint = e.getPoint();
 			shape.setPosition(startPoint);
+			shape.resize(startPoint);
 		}
 
 		public void mouseDragged(MouseEvent e)
