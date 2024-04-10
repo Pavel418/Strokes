@@ -41,6 +41,13 @@ public class Draw {
 	private int saveCounter = 0;
 	private final Map<String, Icon> icons = new HashMap<>();
 
+	/**
+	 * Sets the Nimbus look and feel for the application.
+	 * This method tries to find the Nimbus look and feel among the installed look and feels
+	 * and sets it as the current look and feel for the application.
+	 * If the Nimbus look and feel is not found or an exception occurs during the process,
+	 * an exception stack trace is printed.
+	 */
 	public static void setNimbusFeel() {
 		try {
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -58,6 +65,11 @@ public class Draw {
 		loadIcons();
 	}
 
+	/**
+	 * Loads the icons used in the application.
+	 * The icons are retrieved from the "/assets" directory.
+	 * Each icon is associated with a specific key in the "icons" map.
+	 */
 	private void loadIcons() {
 		icons.put("save", new ImageIcon(getClass().getResource("/assets/save.png")));
 		icons.put("undo", new ImageIcon(getClass().getResource("/assets/undo.png")));
@@ -81,6 +93,14 @@ public class Draw {
 		}
 	};
 	
+	/**
+	 * The ActionListener interface represents an object that can receive action events.
+	 * 
+	 * An action event occurs when a user interacts with a GUI component, such as clicking a button.
+	 * 
+	 * Classes that implement this interface must provide an implementation for the actionPerformed method,
+	 * which is called when an action event occurs.
+	 */
 	private ActionListener listener = new ActionListener() {
 		public void actionPerformed(ActionEvent event) {
 			JFileChooser fileChooser;
@@ -168,11 +188,24 @@ public class Draw {
 		}
 	};
 
-	public void setWH(int width, int height) {
+	/**
+	 * Sets the dimensions of the window.
+	 *
+	 * @param width  the width of the window
+	 * @param height the height of the window
+	 */
+	public void setWindowDimensions(int width, int height) {
 		this.width = width;
 		this.height = height;
 	}
 
+	/**
+	 * Creates a JButton with the specified action command and icon.
+	 *
+	 * @param actionCommand the action command for the button
+	 * @param icon the icon for the button
+	 * @return the created JButton
+	 */
 	private JButton createLeftbarButton(String actionCommand, Icon icon) {
 		JButton button = new JButton(icon);
 		button.setPreferredSize(new Dimension(40, 40));
@@ -181,6 +214,12 @@ public class Draw {
 		return button;
 	}
 
+	/**
+	 * Creates a JButton with the specified background color.
+	 * 
+	 * @param color the background color of the button
+	 * @return the created JButton
+	 */
 	private JButton createColorButton(Color color) {
 		JButton button = new JButton();
 		button.setBackground(color);
@@ -190,6 +229,11 @@ public class Draw {
 		return button;
 	}
 
+	/**
+	 * Adds shape buttons to the given box.
+	 * 
+	 * @param box The box to which the shape buttons will be added.
+	 */
 	private void addShapeButtons(Box box) {
 		for (Map.Entry<String, Icon> entry : this.icons.entrySet()) {
 			if (entry.getKey().equals("save") || entry.getKey().equals("undo") || entry.getKey().equals("redo")
@@ -203,8 +247,16 @@ public class Draw {
 		}
 	}
 
+	/**
+	 * Opens the Paint application window.
+	 * Sets up the user interface components, such as buttons, sliders, and canvas.
+	 * Initializes the JFrame, container, and panels.
+	 * Adds event listeners to the buttons and sliders.
+	 * Sets the size and title of the JFrame.
+	 * Displays the JFrame and makes it visible to the user.
+	 */
 	public void openPaint() {
-		InputWH.setNimbusFeel();
+		Main.setNimbusFeel();
 		JFrame frame = new JFrame("Paint (" + width + "X" + height + ")");
 		Container container = frame.getContentPane();
 		container.setLayout(new BorderLayout());

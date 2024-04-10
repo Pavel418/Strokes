@@ -15,12 +15,12 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
-public class InputWH {
+public class Main {
 	public int width;
 	public int height;
 	Draw draw = new Draw();
 
-	InputWH() {
+	Main() {
 		showInput();
 	}
 
@@ -51,12 +51,12 @@ public class InputWH {
 				JOptionPane.showMessageDialog(null, p,
 						"W:900,H:800 Minimum required", JOptionPane.ERROR_MESSAGE);
 			}
-			draw.setWH(width, height);
+			draw.setWindowDimensions(width, height);
 			draw.openPaint();
 		} catch (IllegalArgumentException e) {
 			// JOptionPane.showMessageDialog(null, p,
 			// "Please enter valid number!", JOptionPane.ERROR_MESSAGE);
-			draw.setWH(1000, 1000);
+			draw.setWindowDimensions(1000, 1000);
 			draw.openPaint();
 		}
 	}
@@ -85,7 +85,7 @@ public class InputWH {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new InputWH();
+				new Main();
 			}
 		});
 	}
