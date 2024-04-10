@@ -106,28 +106,9 @@ public class Draw {
 			JFileChooser fileChooser;
 			if (event.getSource() == clearButton) {
 				canvas.clear();
-			} else if (event.getSource() == blackButton) {
-				canvas.black();
-			} else if (event.getSource() == blueButton) {
-				canvas.blue();
-			} else if (event.getSource() == greenButton) {
-				canvas.green();
-			} else if (event.getSource() == redButton) {
-				canvas.red();
-			} else if (event.getSource() == magentaButton) {
-				canvas.magenta();
-			} else if (event.getSource() == grayButton) {
-				canvas.gray();
-			} else if (event.getSource() == orangeButton) {
-				canvas.orange();
-			} else if (event.getSource() == yellowButton) {
-				canvas.yellow();
-			} else if (event.getSource() == pinkButton) {
-				canvas.pink();
-			} else if (event.getSource() == cyanButton) {
-				canvas.cyan();
-			} else if (event.getSource() == lightGrayButton) {
-				canvas.lightGray();
+			} else if (event.getActionCommand() == "color") {
+				JButton button = (JButton) event.getSource();
+				canvas.setColor(button.getBackground());
 			} else if (event.getSource() == undoButton) {
 				canvas.undo();
 			} else if (event.getSource() == redoButton) {
@@ -224,7 +205,7 @@ public class Draw {
 		JButton button = new JButton();
 		button.setBackground(color);
 		button.setPreferredSize(new Dimension(40, 40));
-		button.setActionCommand(color.toString());
+		button.setActionCommand("color");
 		button.addActionListener(listener);
 		return button;
 	}
