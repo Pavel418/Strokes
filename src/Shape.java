@@ -51,7 +51,9 @@ class Rectangle extends Shape {
 
     @Override
     public void draw(Graphics g) {
-        g.fillRect(start.x, start.y, end.x - start.x, end.y - start.y);
+        int startX = Math.min(start.x, end.x);
+        int startY = Math.min(start.y, end.y);
+        g.drawRect(startX, startY, Math.abs(end.x - start.x), Math.abs(end.y - start.y));
     }
 }
 
