@@ -25,7 +25,6 @@ public class Canvas extends JComponent {
 	private int X1, Y1, X2, Y2;
 	private Graphics2D g;
 	private Image img;
-	private final Stack<Image> history = new Stack<>();
 	private final Stack<Image> undoStack = new Stack<>();
 	private final Stack<Image> redoStack = new Stack<>();
 	private Shape shape;
@@ -47,6 +46,11 @@ public class Canvas extends JComponent {
 			clear();
 		}
 		g1.drawImage(img, 0, 0, null);
+		if (shape != null) {
+			Graphics2D g2 = (Graphics2D) g1;
+			g2.setStroke(g.getStroke());
+			shape.draw(g2);
+		}
 	}
 
 	public void defaultListener() {
@@ -54,7 +58,6 @@ public class Canvas extends JComponent {
 		listener = new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				saveToStack(img);
-				addImage(img);
 				X2 = e.getX();
 				Y2 = e.getY();
 			}
@@ -156,16 +159,12 @@ public class Canvas extends JComponent {
 		motion = ml;
 	}
 
-	private void addImage(Image img) {
-		history.push(copyImage(img));
-	}
-
 	private void setImage(Image img) {
 		g = (Graphics2D) img.getGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		this.img = img;
-
+		
 		repaint();
 	}
 
@@ -211,31 +210,22 @@ public class Canvas extends JComponent {
 	}
 
 	class MyMouseListener extends MouseInputAdapter {
-		boolean dragging = false;
 		public void mousePressed(MouseEvent e) {
-			saveToStack(img);
-			addImage(img);
 			Point startPoint = e.getPoint();
 			shape.setPosition(startPoint);
 			shape.resize(startPoint);
+			saveToStack(img);
 		}
 
 		public void mouseDragged(MouseEvent e) {
 			shape.resize(e.getPoint());
-			if (!dragging) {
-				dragging = true;
-			} else {
-				undo();
-			}
-			shape.draw(g);
-			addImage(img);
-			saveToStack(img);
 			repaint();
 		}
 
 		public void mouseReleased(MouseEvent e) {
 			shape.resize(e.getPoint());
 			shape.draw(g);
+			shape.start = shape.end;
 			repaint();
 		}
 	}
