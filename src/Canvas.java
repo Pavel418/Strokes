@@ -25,7 +25,7 @@ public class Canvas extends JComponent {
 	private int X1, Y1, X2, Y2;
 	private Graphics2D g;
 	private Image img;
-	ArrayList<Shape> shapes = new ArrayList<>();
+	private final Stack<Image> history = new Stack<>();
 	private final Stack<Image> undoStack = new Stack<>();
 	private final Stack<Image> redoStack = new Stack<>();
 	private Shape shape;
@@ -47,14 +47,6 @@ public class Canvas extends JComponent {
 			clear();
 		}
 		g1.drawImage(img, 0, 0, null);
-
-		if (shape != null) {
-			shape.draw(g1);
-		}
-
-		for (Shape s : shapes) {
-			s.draw(g1);
-		}
 	}
 
 	public void defaultListener() {
@@ -62,6 +54,7 @@ public class Canvas extends JComponent {
 		listener = new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				saveToStack(img);
+				addImage(img);
 				X2 = e.getX();
 				Y2 = e.getY();
 			}
@@ -163,12 +156,16 @@ public class Canvas extends JComponent {
 		motion = ml;
 	}
 
+	private void addImage(Image img) {
+		history.push(copyImage(img));
+	}
+
 	private void setImage(Image img) {
 		g = (Graphics2D) img.getGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setPaint(Color.black);
 		this.img = img;
+
 		repaint();
 	}
 
@@ -199,7 +196,9 @@ public class Canvas extends JComponent {
 		try {
 			img = ImageIO.read(file);
 			g = (Graphics2D) img.getGraphics();
-		} catch (IOException ignored) {
+			repaint();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -212,27 +211,32 @@ public class Canvas extends JComponent {
 	}
 
 	class MyMouseListener extends MouseInputAdapter {
-		private Point startPoint;
-
+		boolean dragging = false;
 		public void mousePressed(MouseEvent e) {
-			System.out.println("mousePressed");
-			startPoint = e.getPoint();
+			saveToStack(img);
+			addImage(img);
+			Point startPoint = e.getPoint();
 			shape.setPosition(startPoint);
 			shape.resize(startPoint);
 		}
 
 		public void mouseDragged(MouseEvent e) {
 			shape.resize(e.getPoint());
+			if (!dragging) {
+				dragging = true;
+			} else {
+				undo();
+			}
+			shape.draw(g);
+			addImage(img);
+			saveToStack(img);
 			repaint();
 		}
 
 		public void mouseReleased(MouseEvent e) {
-			try {
-				shapes.add((Shape) shape.clone());
-				repaint();
-			} catch (CloneNotSupportedException e1) {
-				e1.printStackTrace();
-			}
+			shape.resize(e.getPoint());
+			shape.draw(g);
+			repaint();
 		}
 	}
 }
