@@ -49,6 +49,7 @@ public class Canvas extends JComponent {
 		if (shape != null) {
 			Graphics2D g2 = (Graphics2D) g1;
 			g2.setStroke(g.getStroke());
+			g2.setColor(g.getColor());
 			shape.draw(g2);
 		}
 	}
