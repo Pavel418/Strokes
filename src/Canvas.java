@@ -57,7 +57,7 @@ public class Canvas extends JComponent {
 		setDoubleBuffered(false);
 		listener = new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				saveToStack(img);
+				saveToStack(copyImage(img));
 				X2 = e.getX();
 				Y2 = e.getY();
 			}
@@ -90,7 +90,7 @@ public class Canvas extends JComponent {
 	public void undo() {
 		if (!undoStack.isEmpty()) {
 			Image undoTemp = undoStack.pop();
-			redoStack.push(img);
+			redoStack.push(copyImage(img));
 			setImage(undoTemp);
 		}
 	}
@@ -98,7 +98,7 @@ public class Canvas extends JComponent {
 	public void redo() {
 		if (!redoStack.isEmpty()) {
 			Image redoTemp = redoStack.pop();
-			undoStack.push(img);
+			undoStack.push(copyImage(img));
 			setImage(redoTemp);
 		}
 	}
@@ -160,11 +160,12 @@ public class Canvas extends JComponent {
 	}
 
 	private void setImage(Image img) {
+		this.img = img;
 		g = (Graphics2D) img.getGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-		this.img = img;
-		
+		g.setStroke(new BasicStroke());
+		g.setColor(Color.BLACK);
 		repaint();
 	}
 
@@ -180,8 +181,8 @@ public class Canvas extends JComponent {
 		undoStack.push(copyImage(img));
 	}
 
-	public void setThickness(int thick) {
-		g.setStroke(new BasicStroke(thick));
+	public void setThickness(int thickness) {
+		g.setStroke(new BasicStroke(thickness));
 	}
 
 	public void save(File file) {
