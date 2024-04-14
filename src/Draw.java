@@ -10,6 +10,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Objects;
 
 import javax.swing.Box;
 import javax.swing.Icon;
@@ -26,17 +27,27 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * The Draw class represents the main class of the Paint application.
+ * It contains the main method that creates an instance of the Draw class and calls the openPaint method.
+ * The openPaint method sets up the user interface components, such as buttons, sliders, and canvas.
+ * It initializes the JFrame, container, and panels, and adds event listeners to the buttons and sliders.
+ * The openPaint method sets the size and title of the JFrame, displays the JFrame, and makes it visible to the user.
+ */
 public class Draw {
-
 	private Canvas canvas;
 	private Color color = Color.WHITE;
 	private JLabel filenameBar, thicknessStat;
 	private JSlider thicknessSlider;
 	private int width, height;
-	private JButton clearButton, blackButton, blueButton, greenButton, redButton,
-			colorPicker, magentaButton, grayButton, orangeButton, yellowButton,
-			pinkButton, cyanButton, lightGrayButton, saveButton, loadButton,
-			saveAsButton, pencilButton, undoButton, redoButton;
+	private JButton clearButton;
+    private JButton colorPicker;
+    private JButton saveButton;
+    private JButton loadButton;
+    private JButton saveAsButton;
+    private JButton pencilButton;
+    private JButton undoButton;
+    private JButton redoButton;
 	private File file;
 	private int saveCounter = 0;
 	private final Map<String, Icon> icons = new HashMap<>();
@@ -85,7 +96,15 @@ public class Draw {
 		icons.put("pentagon", new ImageIcon(getClass().getResource("/assets/pentagon.png")));
 	}
 
-	private ChangeListener thicknessListener = new ChangeListener() {
+	/**
+	 * The ChangeListener interface represents an object that can receive change events.
+	 *
+	 * A change event occurs when the state of a GUI component changes, such as when a slider is moved.
+	 *
+	 * Classes that implement this interface must provide an implementation for the stateChanged method,
+	 * which is called when a change event occurs.
+	 */
+	private final ChangeListener thicknessListener = new ChangeListener() {
 		public void stateChanged(ChangeEvent e) {
 			thicknessStat.setText(String.format("%s",
 					thicknessSlider.getValue()));
@@ -106,28 +125,28 @@ public class Draw {
 			JFileChooser fileChooser;
 			if (event.getSource() == clearButton) {
 				canvas.clear();
-			} else if (event.getActionCommand() == "color") {
+			} else if (Objects.equals(event.getActionCommand(), "color")) {
 				JButton button = (JButton) event.getSource();
 				canvas.setColor(button.getBackground());
 			} else if (event.getSource() == undoButton) {
 				canvas.undo();
 			} else if (event.getSource() == redoButton) {
 				canvas.redo();
-			} else if (event.getActionCommand() == "rect") {
+			} else if (Objects.equals(event.getActionCommand(), "rect")) {
 				canvas.rect();
-			} else if (event.getActionCommand() == "circle") {
+			} else if (Objects.equals(event.getActionCommand(), "circle")) {
 				canvas.circle();
-			} else if (event.getActionCommand() == "rightTriangle") {
+			} else if (Objects.equals(event.getActionCommand(), "rightTriangle")) {
 				canvas.rightTriangle();
-			} else if (event.getActionCommand() == "triangle") {
+			} else if (Objects.equals(event.getActionCommand(), "triangle")) {
 				canvas.triangle();
-			} else if (event.getActionCommand() == "line") {
+			} else if (Objects.equals(event.getActionCommand(), "line")) {
 				canvas.line();
-			} else if (event.getActionCommand() == "diamond") {
+			} else if (Objects.equals(event.getActionCommand(), "diamond")) {
 				canvas.diamond();
-			} else if (event.getActionCommand() == "arrow") {
+			} else if (Objects.equals(event.getActionCommand(), "arrow")) {
 				canvas.arrow();
-			} else if (event.getActionCommand() == "pentagon") {
+			} else if (Objects.equals(event.getActionCommand(), "pentagon")) {
 				canvas.pentagon();
 			} else if (event.getSource() == pencilButton) {
 				canvas.pencil();
@@ -164,7 +183,7 @@ public class Draw {
 						color);
 				if (color == null)
 					color = (Color.WHITE);
-				canvas.picker(color);
+				canvas.setColor(color);
 			}
 		}
 	};
@@ -263,23 +282,21 @@ public class Draw {
 		undoButton = createLeftbarButton("undo", icons.get("undo"));
 		redoButton = createLeftbarButton("redo", icons.get("redo"));
 
-		ArrayList<JButton> colorButtons = new ArrayList<>();
-		blackButton = createColorButton(Color.BLACK);
-		blueButton = createColorButton(Color.BLUE);
-		greenButton = createColorButton(Color.GREEN);
-		redButton = createColorButton(Color.RED);
-		magentaButton = createColorButton(Color.MAGENTA);
-		grayButton = createColorButton(Color.GRAY);
-		orangeButton = createColorButton(Color.ORANGE);
-		yellowButton = createColorButton(Color.YELLOW);
-		pinkButton = createColorButton(Color.PINK);
-		cyanButton = createColorButton(Color.CYAN);
-		lightGrayButton = createColorButton(Color.LIGHT_GRAY);
-		colorButtons.addAll(
-				java.util.Arrays.asList(
-						blackButton, blueButton, greenButton, redButton, magentaButton,
-						grayButton, orangeButton, yellowButton, pinkButton, cyanButton,
-						lightGrayButton));
+        JButton blackButton = createColorButton(Color.BLACK);
+        JButton blueButton = createColorButton(Color.BLUE);
+        JButton greenButton = createColorButton(Color.GREEN);
+        JButton redButton = createColorButton(Color.RED);
+        JButton magentaButton = createColorButton(Color.MAGENTA);
+        JButton grayButton = createColorButton(Color.GRAY);
+        JButton orangeButton = createColorButton(Color.ORANGE);
+        JButton yellowButton = createColorButton(Color.YELLOW);
+        JButton pinkButton = createColorButton(Color.PINK);
+        JButton cyanButton = createColorButton(Color.CYAN);
+        JButton lightGrayButton = createColorButton(Color.LIGHT_GRAY);
+        ArrayList<JButton> colorButtons = new ArrayList<>(java.util.Arrays.asList(
+                blackButton, blueButton, greenButton, redButton, magentaButton,
+                grayButton, orangeButton, yellowButton, pinkButton, cyanButton,
+                lightGrayButton));
 
 		saveButton = new JButton(icons.get("save"));
 		saveButton.addActionListener(listener);

@@ -14,13 +14,15 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Stack;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.event.MouseInputAdapter;
 
+/**
+ * The class represents the canvas to draw on.
+ */
 public class Canvas extends JComponent {
 	private int X1, Y1, X2, Y2;
 	private Graphics2D g;
@@ -36,6 +38,10 @@ public class Canvas extends JComponent {
 		defaultListener();
 	}
 
+	/**
+	 * This method is used to paint the component.
+	 * @param g1 the graphics context
+	 */
 	protected void paintComponent(Graphics g1) {
 		if (img == null) {
 			img = createImage(getSize().width, getSize().height);
@@ -54,6 +60,9 @@ public class Canvas extends JComponent {
 		}
 	}
 
+	/**
+	 * This method is used to set the default listener for the canvas to draw with a pencil.
+	 */
 	public void defaultListener() {
 		setDoubleBuffered(false);
 		listener = new MouseAdapter() {
@@ -81,6 +90,9 @@ public class Canvas extends JComponent {
 		addMouseMotionListener(motion);
 	}
 
+	/**
+	 * This method is used to clear the canvas.
+	 */
 	public void clear() {
 		g.setPaint(Color.white);
 		g.fillRect(0, 0, getSize().width, getSize().height);
@@ -88,6 +100,9 @@ public class Canvas extends JComponent {
 		repaint();
 	}
 
+	/**
+	 * This method is used to undo the last action by displaying the previous image.
+	 */
 	public void undo() {
 		if (!undoStack.isEmpty()) {
 			Image undoTemp = undoStack.pop();
@@ -96,6 +111,9 @@ public class Canvas extends JComponent {
 		}
 	}
 
+	/**
+	 * This method is used to redo the last action by displaying the next image.
+	 */
 	public void redo() {
 		if (!redoStack.isEmpty()) {
 			Image redoTemp = redoStack.pop();
@@ -104,62 +122,96 @@ public class Canvas extends JComponent {
 		}
 	}
 
+	/**
+	 * This method is used to draw with a pencil.
+	 */
 	public void pencil() {
 		removeMouseListener(listener);
 		removeMouseMotionListener(motion);
 		defaultListener();
 	}
 
+	/**
+	 * This method is used to draw a rectangle.
+	 */
 	public void rect() {
 		setShapeListener();
 		shape = new Rectangle();
 	}
 
+	/**
+	 * This method is used to draw a circle.
+	 */
 	public void circle() {
 		setShapeListener();
 		shape = new Oval();
 	}
 
+	/**
+	 * This method is used to draw a right triangle.
+	 */
 	public void rightTriangle() {
 		setShapeListener();
 		shape = new RightTriangle();
 	}
 
+	/**
+	 * This method is used to draw a triangle.
+	 */
 	public void triangle() {
 		setShapeListener();
 		shape = new Triangle();
 	}
 
+	/**
+	 * This method is used to draw a line.
+	 */
 	public void line() {
 		setShapeListener();
 		shape = new Line();
 	}
 
+	/**
+	 * This method is used to draw a star.
+	 */
 	public void diamond() {
 		setShapeListener();
 		shape = new Diamond();
 	}
 
+	/**
+	 * This method is used to draw a hexagon.
+	 */
 	public void pentagon() {
 		setShapeListener();
 		shape = new Pentagon();
 	}
 
+	/**
+	 * This method is used to draw an arrow.
+	 */
 	public void arrow() {
 		setShapeListener();
 		shape = new Arrow();
 	}
 
+	/**
+	 * This method is used to set the shape listener when drawing shapes.
+	 */
 	private void setShapeListener() {
 		removeMouseListener(listener);
 		removeMouseMotionListener(motion);
-		MyMouseListener ml = new MyMouseListener();
+		ShapeListener ml = new ShapeListener();
 		addMouseListener(ml);
 		addMouseMotionListener(ml);
 		listener = ml;
 		motion = ml;
 	}
 
+	/**
+	 * This method is used to set the current image to draw on.
+	 * @param img the image to set
+	 */
 	private void setImage(Image img) {
 		this.img = img;
 		g = (Graphics2D) img.getGraphics();
@@ -170,6 +222,11 @@ public class Canvas extends JComponent {
 		repaint();
 	}
 
+	/**
+	 * This method is used to copy the image tp prevent the original image from being modified.
+	 * @param img the image to copy
+	 * @return the copied image
+	 */
 	private BufferedImage copyImage(Image img) {
 		BufferedImage copyOfImage = new BufferedImage(getSize().width,
 				getSize().height, BufferedImage.TYPE_INT_RGB);
@@ -178,40 +235,67 @@ public class Canvas extends JComponent {
 		return copyOfImage;
 	}
 
+	/**
+	 * This method is used to save the image to the stack.
+	 * @param img the image to save
+	 */
 	private void saveToStack(Image img) {
 		undoStack.push(copyImage(img));
 	}
 
+	/**
+	 * This method is used to set the thickness of the shape.
+	 * @param thickness the thickness of the shape
+	 */
 	public void setThickness(int thickness) {
 		g.setStroke(new BasicStroke(thickness));
 	}
 
+	/**
+	 * This method is used to save the image to the file.
+	 * @param file the file to save the image to
+	 */
 	public void save(File file) {
 		try {
 			ImageIO.write((RenderedImage) img, "PNG", file);
-		} catch (IOException ignored) {
+		} catch (IOException e) {
+			System.err.println("Error saving image to file: " + file.getPath());
+			System.err.println("Exception message: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * This method is used to load the image from the file.
+	 * @param file the file to load the image from
+	 */
 	public void load(File file) {
 		try {
 			img = ImageIO.read(file);
 			g = (Graphics2D) img.getGraphics();
 			repaint();
 		} catch (IOException e) {
+			System.err.println("Error loading image from file: " + file.getPath());
+			System.err.println("Exception message: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * This method is used to pick the color of the shape.
+	 * @param color the color of the shape
+	 */
 	public void setColor(Color color) {
 		g.setPaint(color);
 	}
 
-	public void picker(Color color) {
-		g.setPaint(color);
-	}
-
-	class MyMouseListener extends MouseInputAdapter {
+	/**
+	 * The class handles the drawing of shapes on the canvas.	 */
+	class ShapeListener extends MouseInputAdapter {
+		/**
+		 * Invoked when a mouse button has been pressed on a component.
+		 * @param e the event to be processed
+		 */
 		public void mousePressed(MouseEvent e) {
 			Point startPoint = e.getPoint();
 			shape.setPosition(startPoint);
@@ -219,11 +303,19 @@ public class Canvas extends JComponent {
 			saveToStack(img);
 		}
 
+		/**
+		 * Invoked when a mouse button is pressed on a component and then dragged.
+		 * @param e the event to be processed
+		 */
 		public void mouseDragged(MouseEvent e) {
 			shape.resize(e.getPoint());
 			repaint();
 		}
 
+		/**
+		 * Invoked when a mouse button has been released on a component.
+		 * @param e the event to be processed
+		 */
 		public void mouseReleased(MouseEvent e) {
 			shape.resize(e.getPoint());
 			shape.draw(g);

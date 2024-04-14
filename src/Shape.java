@@ -1,26 +1,51 @@
 import java.awt.*;
 
+/**
+ * This abstract class represents the shape to draw.
+ * All shapes have a start and end point.
+ */
 abstract class Shape implements Cloneable {
     protected Point start, end;
 
     public Shape() {
     }
 
+    /**
+     * This method is used to set the start position of the shape.
+     * @param start The start position of the shape.
+     */
     public void setPosition(Point start) {
         this.start = start;
     }
 
+    /**
+     * This method is used to draw the shape.
+     * @param g The graphics object.
+     */
     public abstract void draw(Graphics g);
 
+    /**
+     * This method is used to resize the shape.
+     * @param end The end position of the shape.
+     */
     public void resize(Point end) {
         this.end = end;
     }
 
+    /**
+     * This method is used to clone the shape.
+     * @return The cloned shape.
+     * @throws CloneNotSupportedException If the shape cannot be cloned.
+     */
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 
+    /**
+     * This helper method is used in some shapes for mirroring the shape.
+     * @return The values of the shape.
+     */
     protected int[] calculateValues() {
         int zeroX, x, zeroY, y;
 

@@ -15,6 +15,9 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
+/**
+ * The class represents the main class of the program.
+ */
 public class Main {
 	public int width;
 	public int height;
@@ -24,6 +27,9 @@ public class Main {
 		showInput();
 	}
 
+	/**
+	 * This method is used to show the input dialog.
+	 */
 	private void showInput() {
 		setNimbusFeel();
 		JPanel p = new JPanel(new BorderLayout(5, 5));
