@@ -27,8 +27,8 @@ public class Canvas extends JComponent {
 	private int X1, Y1, X2, Y2;
 	private Graphics2D g;
 	private Image img;
-	private final Stack<Image> undoStack = new Stack<>();
-	private final Stack<Image> redoStack = new Stack<>();
+	private final SizedStack<Image> undoStack = new SizedStack<>(30);
+	private final SizedStack<Image> redoStack = new SizedStack<>(30);
 	private Shape shape;
 	private MouseMotionListener motion;
 	private MouseListener listener;
