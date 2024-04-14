@@ -23,12 +23,20 @@ public class Main {
 	public int height;
 	Draw draw = new Draw();
 
-	Main() {
+	/**
+	 * Constructor for Main class. It initializes the application by displaying the
+	 * input dialog.
+	 */
+	public Main() {
 		showInput();
 	}
 
 	/**
-	 * This method is used to show the input dialog.
+	 * Displays an input dialog to prompt the user for the canvas dimensions.
+	 * It checks that dimensions meet a minimum size requirement and handles invalid
+	 * inputs.
+	 * If the user inputs values below the minimum required size or invalid formats,
+	 * defaults are set and the paint window is opened.
 	 */
 	private void showInput() {
 		setNimbusFeel();
@@ -60,14 +68,15 @@ public class Main {
 			draw.setWindowDimensions(width, height);
 			draw.openPaint();
 		} catch (IllegalArgumentException e) {
-			// JOptionPane.showMessageDialog(null, p,
-			// "Please enter valid number!", JOptionPane.ERROR_MESSAGE);
 			draw.setWindowDimensions(1000, 1000);
 			draw.openPaint();
 		}
 	}
 
-	static void setNimbusFeel() {
+	/**
+	 * Sets the application's look and feel to Nimbus if available.
+	 */
+	public static void setNimbusFeel() {
 		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 			if ("Nimbus".equals(info.getName())) {
 				try {
@@ -84,8 +93,11 @@ public class Main {
 	}
 
 	/**
-	 * @param args
-	 *             none
+	 * The main method which is the entry point for the application. It ensures that
+	 * the application
+	 * is started within the AWT event dispatch thread.
+	 *
+	 * @param args Command line arguments, not used in this application.
 	 */
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -98,6 +110,12 @@ public class Main {
 
 }
 
+/**
+ * Listener class that requests focus on a component when it is added to a
+ * container.
+ * This is particularly useful for ensuring that a text field is ready for input
+ * as soon as it is displayed.
+ */
 class RequestFocusListener implements AncestorListener {
 	private boolean removeListener;
 
@@ -105,10 +123,23 @@ class RequestFocusListener implements AncestorListener {
 		this(true);
 	}
 
+	/**
+	 * Constructs a RequestFocusListener.
+	 * 
+	 * @param removeListener If true, the listener will be removed after the
+	 *                       component gains focus.
+	 */
 	public RequestFocusListener(boolean removeListener) {
 		this.removeListener = removeListener;
 	}
 
+	/**
+	 * Called when a component is added to the hierarchy and possibly becomes
+	 * visible.
+	 * Requests focus on the component and removes the listener if specified.
+	 * 
+	 * @param e the AncestorEvent
+	 */
 	@Override
 	public void ancestorAdded(AncestorEvent e) {
 		JComponent component = e.getComponent();
