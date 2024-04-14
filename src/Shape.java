@@ -1,41 +1,51 @@
 import java.awt.*;
 
 /**
- * This abstract class represents the shape to draw.
- * All shapes have a start and end point.
+ * Abstract base class for all drawable shapes. Each shape has a start point and
+ * an end point
+ * that define its position and size on the canvas.
  */
 abstract class Shape implements Cloneable {
     protected Point start, end;
 
+    /**
+     * Default constructor for shape. Initializes a shape object.
+     */
     public Shape() {
     }
 
     /**
-     * This method is used to set the start position of the shape.
-     * @param start The start position of the shape.
+     * Sets the starting point of the shape.
+     * 
+     * @param start The starting point of the shape as a {@link Point}.
      */
     public void setPosition(Point start) {
         this.start = start;
     }
 
     /**
-     * This method is used to draw the shape.
-     * @param g The graphics object.
+     * Abstract method to draw the shape on a given graphics context.
+     * 
+     * @param g The {@link Graphics} context on which the shape will be drawn.
      */
     public abstract void draw(Graphics g);
 
     /**
-     * This method is used to resize the shape.
-     * @param end The end position of the shape.
+     * Sets the ending point of the shape, effectively resizing it based on the
+     * start and end points.
+     * 
+     * @param end The ending point of the shape as a {@link Point}.
      */
     public void resize(Point end) {
         this.end = end;
     }
 
     /**
-     * This method is used to clone the shape.
-     * @return The cloned shape.
-     * @throws CloneNotSupportedException If the shape cannot be cloned.
+     * Clones the current shape.
+     * 
+     * @return A clone of the current shape.
+     * @throws CloneNotSupportedException If the object's class does not support the
+     *                                    {@link Cloneable} interface.
      */
     @Override
     public Object clone() throws CloneNotSupportedException {
@@ -43,8 +53,12 @@ abstract class Shape implements Cloneable {
     }
 
     /**
-     * This helper method is used in some shapes for mirroring the shape.
-     * @return The values of the shape.
+     * Helper method to calculate and return essential geometric values required for
+     * mirroring or constructing complex shapes.
+     * This method computes horizontal and vertical dimensions based on the start
+     * and end points.
+     * 
+     * @return An array of four integers: [maximum X, width, maximum Y, height].
      */
     protected int[] calculateValues() {
         int zeroX, x, zeroY, y;
@@ -69,11 +83,19 @@ abstract class Shape implements Cloneable {
     }
 }
 
+/**
+ * Concrete implementation of {@link Shape} for drawing rectangles.
+ */
 class Rectangle extends Shape {
     public Rectangle() {
-
     }
 
+    /**
+     * Draws a rectangle using the start and end points to determine the top left
+     * corner and dimensions.
+     * 
+     * @param g The graphics context to use for drawing.
+     */
     @Override
     public void draw(Graphics g) {
         int startX = Math.min(start.x, end.x);
@@ -82,10 +104,18 @@ class Rectangle extends Shape {
     }
 }
 
+/**
+ * Concrete implementation of {@link Shape} for drawing ovals.
+ */
 class Oval extends Shape {
     public Oval() {
     }
 
+    /**
+     * Draws an oval within the bounding box defined by the start and end points.
+     * 
+     * @param g The graphics context to use for drawing.
+     */
     @Override
     public void draw(Graphics g) {
         int startX = Math.min(start.x, end.x);
@@ -94,10 +124,18 @@ class Oval extends Shape {
     }
 }
 
+/**
+ * Concrete implementation of {@link Shape} for drawing right triangles.
+ */
 class RightTriangle extends Shape {
     public RightTriangle() {
     }
 
+    /**
+     * Draws a right triangle with a right angle at the end point.
+     * 
+     * @param g The graphics context to use for drawing.
+     */
     @Override
     public void draw(Graphics g) {
         int[] xPoints = { start.x, start.x, end.x };
@@ -106,10 +144,18 @@ class RightTriangle extends Shape {
     }
 }
 
+/**
+ * Concrete implementation of {@link Shape} for drawing equilateral triangles.
+ */
 class Triangle extends Shape {
     public Triangle() {
     }
 
+    /**
+     * Draws an equilateral triangle based on the start and end points.
+     * 
+     * @param g The graphics context to use for drawing.
+     */
     @Override
     public void draw(Graphics g) {
         int[] xPoints = { start.x, end.x, start.x + (end.x - start.x) / 2 };
@@ -118,20 +164,37 @@ class Triangle extends Shape {
     }
 }
 
+/**
+ * Concrete implementation of {@link Shape} for drawing straight lines.
+ */
 class Line extends Shape {
     public Line() {
     }
 
+    /**
+     * Draws a line from the start point to the end point.
+     * 
+     * @param g The graphics context to use for drawing.
+     */
     @Override
     public void draw(Graphics g) {
         g.drawLine(start.x, start.y, end.x, end.y);
     }
 }
 
+/**
+ * Concrete implementation of {@link Shape} for drawing diamonds.
+ */
 class Diamond extends Shape {
     public Diamond() {
     }
 
+    /**
+     * Draws a diamond shape centered at the midpoint between the start and end
+     * points.
+     * 
+     * @param g The graphics context to use for drawing.
+     */
     @Override
     public void draw(Graphics g) {
         int[] xPoints = { start.x, start.x + (end.x - start.x) / 2, end.x, start.x + (end.x - start.x) / 2 };
@@ -140,10 +203,19 @@ class Diamond extends Shape {
     }
 }
 
+/**
+ * Concrete implementation of {@link Shape} for drawing pentagons.
+ */
 class Pentagon extends Shape {
     public Pentagon() {
     }
 
+    /**
+     * Draws a pentagon using geometric calculations from {@link calculateValues()}
+     * to determine the points.
+     * 
+     * @param g The graphics context to use for drawing.
+     */
     @Override
     public void draw(Graphics g) {
         int zeroX, x, zeroY, y;
@@ -159,10 +231,19 @@ class Pentagon extends Shape {
     }
 }
 
+/**
+ * Concrete implementation of {@link Shape} for drawing arrows.
+ */
 class Arrow extends Shape {
     public Arrow() {
     }
 
+    /**
+     * Draws an arrow pointing right, using geometric calculations to define the
+     * shape based on the start and end points.
+     * 
+     * @param g The graphics context to use for drawing.
+     */
     @Override
     public void draw(Graphics g) {
         int zeroX, x, zeroY, y;
